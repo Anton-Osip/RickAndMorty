@@ -1,0 +1,2 @@
+# RickAndMorty
+изучаем Next.js
