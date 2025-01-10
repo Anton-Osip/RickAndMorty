@@ -7,7 +7,7 @@ import {getLayout} from "components/Layout/BaseLayout/BaseLayout";
 
 export const getStaticProps = async () => {
     const characters = await API.rickAndMorty.getCharacters();
-    return {props: {characters}}
+    return {props: {characters}, revalidate: 60}
 }
 
 type Props = {
