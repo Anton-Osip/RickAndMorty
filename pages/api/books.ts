@@ -1,24 +1,32 @@
-import type {NextApiRequest, NextApiResponse} from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next'
 
-type Data = { id: number, title: string }
+type Data = BookType[]
 
-const booksDB: Data[] = [
-    {id: 1, title: "John"},
-    {id: 2, title: "Anton"},
-    {id: 3, title: "Vikrum"},
+const booksDB = [
+    {id: 1, title: 'name 1'},
+    {id: 2, title: 'title'},
+    {id: 3, title: 'Name 2'},
 ]
 
-export default function handler(
+export default async function handler(
     req: NextApiRequest,
-    res: NextApiResponse<Data[]>
+    res: NextApiResponse<Data>
 ) {
     if (req.method === 'GET') {
-        let books: Data[] = booksDB
-        const term = req.query.term as string
-        if (term){
-            books=books.filter((book: Data) => book.title.toLowerCase().includes(term.toLowerCase()))
-        }
-            res.status(200).json(books)
-    }
+        let books = booksDB
 
+        const term = req.query.term as string
+
+        if (term) {
+            books = books.filter(book => book.title.toLowerCase().includes(term.toLowerCase()))
+        }
+
+        res.status(200).json(books)
+    }
+}
+
+//types
+type BookType = {
+    id: number
+    title: string
 }

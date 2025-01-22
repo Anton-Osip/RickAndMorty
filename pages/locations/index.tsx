@@ -1,34 +1,22 @@
-import {LocationType, ResponseType} from "assets/api/rick-and-morty-api";
-import {PageWrapper} from "components/PageWrapper/PageWrapper";
-import {dehydrate, useQuery} from "@tanstack/react-query";
-import {QueryClient} from "@tanstack/query-core";
-import {Card} from "components/Card/Card";
-import {getLayout} from "components/Layout/BaseLayout/BaseLayout";
-
-const getLocations = async () => {
-    const response = await fetch('https://rickandmortyapi.com/api/location', {
-        method: "GET",
-    })
-    return response.json()
-}
-
-export const getStaticProps = async () => {
-
-    const queryClient = new QueryClient();
-
-    await queryClient.fetchQuery(['locations'], getLocations)
-
-    return {props: {dehydratedState: dehydrate(queryClient)}}
-}
+import {PageWrapper} from 'components/PageWrapper/PageWrapper';
+import {Card} from 'components/Card/Card';
+import {getLayout} from 'components/Layout/BaseLayout/BaseLayout';
+import {useEffect, useState} from 'react';
+import {API} from 'assets/api/api';
+import {LocationType} from 'assets/api/rick-and-morty-api';
+import {Nullable} from '@/types/Nullable';
 
 const Locations = () => {
+    const [locations, setLocations] = useState<Nullable<LocationType[]>>(null)
 
-    const {data: locations} = useQuery<ResponseType<LocationType>>(['locations'], getLocations)
+    useEffect(() => {
+        API.rickAndMorty.getLocations().then(res => setLocations(res.results))
+    }, [])
 
     if (!locations) return null
 
-    const locationsList = locations.results.map(location => (
-        <Card key = {location.id} name = {location.name}></Card>
+    const locationsList = locations.map(location => (
+        <Card key={location.id} name={location.name}/>
     ))
 
     return (
@@ -39,4 +27,4 @@ const Locations = () => {
 }
 
 Locations.getLayout = getLayout
-export default Locations;
+export default Locations

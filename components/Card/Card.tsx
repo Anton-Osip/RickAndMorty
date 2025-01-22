@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
-import styled from "styled-components";
+import s from "./Card.module.css";
 
 type PropsType = {
   name: string;
@@ -9,23 +9,9 @@ export const Card = (props: PropsWithChildren<PropsType>) => {
   const { children, name } = props;
 
   return (
-    <CardBlock>
-      <Name>{name}</Name>
+    <div className={s.block}>
+      <div className={s.name}>{name}</div>
       {children}
-    </CardBlock>
+    </div>
   );
 };
-
-const CardBlock = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 15px;
-  border: 2px solid #facaff;
-  box-shadow: 0 2px 3px 1px #fa52d3;
-  border-radius: 15px;
-`;
-
-const Name = styled.div`
-  font-weight: 600;
-  font-size: 24px;
-`;
